@@ -1,6 +1,53 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 var prefix = "$";
+client.on('message', message => { // Leaked by [ @M3a4x ]
+   if(!message.channel.guild) return;
+if(message.content.startsWith(prefix + 'bc')) {
+if(!message.channel.guild) return message.channel.send('**هذا الأمر فقط للسيرفرات**').then(m => m.delete(5000));
+if(!message.member.hasPermission('ADMINISTRATOR')) return
+const args = message.content.split(" ").slice(1).join(" ")
+const BcList = new Discord.RichEmbed()
+.setThumbnail(message.author.avatarURL)
+.setAuthor(`محتوى الرساله : ${args}`)
+.setDescription(`**برودكاست بـ امبد 📝\nبرودكاست بدون امبد✏ \nلديك دقيقه للأختيار قبل الغاء البرودكاست**`)
+if (!args) return message.reply('**يجب عليك كتابة كلمة او جملة لإرسال البرودكاست**');message.channel.send(BcList).then(msg => {
+msg.react('📝')
+.then(() => msg.react('✏'))
+.then(() =>msg.react('📝'))
+ 
+var EmbedBcFilter = (reaction, user) => reaction.emoji.name === '📝' && user.id === message.author.id;
+var NormalBcFilter = (reaction, user) => reaction.emoji.name === '✏' && user.id === message.author.id;
+ 
+var EmbedBc = msg.createReactionCollector(EmbedBcFilter, { time: 60000 });
+var NormalBc = msg.createReactionCollector(NormalBcFilter, { time: 60000 });
+ 
+ 
+EmbedBc.on("collect", r => {
+ 
+message.channel.send(`:ballot_box_with_check: تم ارسال الرساله بنجاح`).then(m => m.delete(5000));
+message.guild.members.forEach(m => {
+var EmbedRep = args.replace('<server>' ,message.guild.name).replace('<user>', m).replace('<by>', `${message.author.username}#${message.author.discriminator}`)
+var bc = new
+Discord.RichEmbed()
+.setColor('RANDOM')
+.setDescription(EmbedRep)
+.setThumbnail(message.author.avatarURL)
+m.send({ embed: bc })
+msg.delete();
+})
+})
+NormalBc.on("collect", r => {
+  message.channel.send(`:ballot_box_with_check: تم ارسال الرساله بنجاح`).then(m => m.delete(5000));
+message.guild.members.forEach(m => {
+var NormalRep = args.replace('<server>' ,message.guild.name).replace('<user>', m).replace('<by>', `${message.author.username}#${message.author.discriminator}`)
+m.send(NormalRep);
+msg.delete();
+})
+})
+})
+}
+});
 
   client.on('message', message => {
     if (message.content.startsWith("$Link")) {
@@ -682,49 +729,16 @@ client.on("message", (message) => {
 });
  
 
-const Discord = require("discord.js");
-const client = new Discord.Client();
-var prefix = "d";
-var adminprefix = 'Prefix'
-const developers = ["id"]
-client.on('message', message => {
-    var argresult = message.content.split(` `).slice(1).join(' ');
-      if (!developers.includes(message.author.id)) return;
-      
-  if (message.content.startsWith(adminprefix + 'setg')) {
-    client.user.setGame(argresult);
-      message.channel.send(`**?   ${argresult}**`)
-  } else 
-     if (message.content === (adminprefix + "leave")) {
-    message.guild.leave();        
-  } else  
-  if (message.content.startsWith(adminprefix + 'setw')) {
-  client.user.setActivity(argresult, {type:'WATCHING'});
-      message.channel.send(`**?   ${argresult}**`)
-  } else 
-  if (message.content.startsWith(adminprefix + 'setl')) {
-  client.user.setActivity(argresult , {type:'LISTENING'});
-      message.channel.send(`**?   ${argresult}**`)
-  } else 
-  if (message.content.startsWith(adminprefix + 'sets')) {
-    client.user.setGame(argresult, "https://www.twitch.tv/ayman");
-      message.channel.send(`**?**`)
-  }
-  if (message.content.startsWith(adminprefix + 'setname')) {
-  client.user.setUsername(argresult).then
-      message.channel.send(`Changing The Name To ..**${argresult}** `)
-} else
-if (message.content.startsWith(adminprefix + 'setavatar')) {
-  client.user.setAvatar(argresult);
-    message.channel.send(`Changing The Avatar To :**${argresult}** `);
-}
+client.on('ready', () => {
+   console.log(`----------------`);
+      console.log(`Desert Bot- Script By : Ayman`);
+        console.log(`----------------`);
+      console.log(`ON ${client.guilds.size} Servers '     Script By : Ayman ' `);
+    console.log(`----------------`);
+  console.log(`Logged in as ${client.user.tag}!`);
+client.user.setGame(`GhastMc`,"http://twitch.tv/Ayman")
+client.user.setStatus("dnd")
 });
-
-
-
-
-
-
  
  
  
@@ -736,6 +750,7 @@ message.author.send(`
 ***__وصف عن البوت__***
 **
 ─════════════ {✯اوامر البوت✯} ════════════─
+❧ $bc ➺ برودكاست ب امبيد وبدون
 ❧ $Link ➺ رابط انفايت للسيرفر
 ❧ $clear ➺ مسح الشات
 ❧ $server ➺ لعرض معلومات السيرفر
@@ -761,7 +776,7 @@ message.author.send(`
 ❧ $say ➺ البوت يكرر كلام انته تحدده
 ❧ $id ➺ لعرض معلوماتك
 ❧ $new ➺ لانشاء تذكرة
-─════════════ {✯ ! Ayman , 💦#9955 ✯} ════════════─
+─════════════ {✯ By ! Ayman , 🌊#9955 ✯} ════════════─
 **
 `);
 }
